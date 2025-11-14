@@ -1,0 +1,30 @@
+name: Bandit Scan
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  bandit:
+    name: Run Bandit Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Bandit
+        run: pip install bandit
+
+      - name: Run Bandit
+        run: bandit -r . -f custom -o bandit-results.txt || true
+        # -r . : Recursively scan the current directory
+        # -f custom -o bandit-results.txt : Output results to bandit-results.txt in custom format
+        # || true : Allow the step to pass even if Bandit finds issues (non-zero exit code)
