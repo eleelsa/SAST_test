@@ -2,8 +2,8 @@
 
 import subprocess
 import sqlite3
-import yaml
-import pickle
+# import yaml
+# import pickle
 
 
 #######################################
@@ -31,15 +31,16 @@ def dangerous_sql(name):
 #######################################
 # ③ YAML 任意コード実行（確実に検出）
 #######################################
-def dangerous_yaml(user_input):
-    # yaml.load は攻撃者入力で任意コード実行の危険あり
-    return yaml.load(user_input, Loader=yaml.Loader)
+# def dangerous_yaml(user_input):
+#     # yaml.load は攻撃者入力で任意コード実行の危険あり
+#     return yaml.load(user_input, Loader=yaml.Loader)
 
 
 #######################################
 # ④ pickle 任意コード実行（確実に検出）
 #######################################
-def dangerous_pickle(blob):
-    # pickle.loads は攻撃者データで任意コード実行可能
-    return pickle.loads(blob)
+# def dangerous_pickle(blob):
+#     # pickle.loads は攻撃者データで任意コード実行可能
+#     return pickle.loads(blob)
+
 
