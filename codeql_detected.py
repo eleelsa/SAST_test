@@ -43,4 +43,10 @@ def dangerous_sql(name):
 #     # pickle.loads は攻撃者データで任意コード実行可能
 #     return pickle.loads(blob)
 
+if __name__ == "__main__":
+    # 脆弱性のある関数を呼び出す
+    dangerous_command("example.txt")
+    dangerous_sql("test_user")
+
+
 
