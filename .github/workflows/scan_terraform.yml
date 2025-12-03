@@ -5,6 +5,12 @@ on:
       - dev
   pull_request:
 
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+  packages: read
+
 jobs:
   build:
     name: Build
