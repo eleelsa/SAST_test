@@ -1,10 +1,8 @@
-name: Trivy IaC Scan
+name: trivy-iac
 
 on:
   push:
-    branches: [ "dev" ]
-  pull_request:
-    branches: [ "dev" ]
+    branches: [ dev ]
 
 permissions:
   contents: read
@@ -17,22 +15,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Trivy
+      - name: Setup Trivy
         uses: aquasecurity/setup-trivy@v0.2.3
         with:
-          version: v0.65.0  # 必要に応じて最新バージョン
+          version: v0.65.0
 
-      - name: Run Trivy IaC Scan (Terraform)
-        uses: aquasecurity/trivy-action@0.30.0
-        with:
-          scan-type: config
-          scan-ref: .
-          format: sarif
-          output: trivy-results.sarif
-          scanners: misconfig  # 必要に応じて vuln, secret, misconfig など
-          severity: CRITICAL,HIGH,MEDIUM,LOW,UNKNOWN
+      - name: Run Trivy IaC scan
+        run: |
+          trivy iac --format sarif --output trivy-iac.sarif .
 
       - name: Upload SARIF to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v4
         with:
-          sarif_file: trivy-results.sarif
+          sarif_file: trivy-iac.sarif
