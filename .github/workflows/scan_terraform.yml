@@ -17,12 +17,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install Trivy
+        uses: aquasecurity/setup-trivy@v0.2.3
+
       - name: Run Trivy IaC (Terraform)
         run: |
-          trivy iac --scanners misconfig \
-                     --format sarif \
-                     --output trivy-results.sarif \
-                     .
+          trivy iac \
+            --scanners misconfig \
+            --format sarif \
+            --output trivy-results.sarif \
+            .
 
       - name: Upload SARIF to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
