@@ -17,18 +17,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Trivy (latest)
-        uses: aquasecurity/setup-trivy-action@v0.2.5
+      - name: Install Trivy
+        uses: aquasecurity/setup-trivy@v0.2.3
+        with:
+          version: v0.65.0  # 必要に応じて最新バージョン
 
       - name: Run Trivy IaC Scan (Terraform)
-        run: |
-          trivy iac config \
-            --format sarif \
-            --output trivy-results.sarif \
-            .
+        uses: aquasecurity/trivy-action@0.30.0
+        with:
+          scan-type: config
+          scan-ref: .
+          format: sarif
+          output: trivy-results.sarif
+          scanners: misconfig  # 必要に応じて vuln, secret, misconfig など
+          severity: CRITICAL,HIGH,MEDIUM,LOW,UNKNOWN
 
       - name: Upload SARIF to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: trivy-results.sarif
-
